@@ -21,6 +21,7 @@ TagManager:
   - QDSUITextInvertedColor
   - QDSUIPrimaryButton
   - QDSUITextInputField
+  - Enemy
   layers:
   - Default
   - TransparentFX
