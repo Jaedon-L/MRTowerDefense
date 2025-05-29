@@ -94,9 +94,11 @@ public class PatternSpawner : MonoBehaviour
         if (idx >= waves.Count) return;
         var wave = waves[idx];
 
+
         // 1) Impose tower limit
         var ui = FindObjectOfType<UISpawner>();
-        if (ui != null) ui.SetTowerLimitForWave(wave.towerLimit);
+        if (ui != null) ui.SetTowerLimitForWave(wave.towerLimit); ui.StartNextWave();
+        
 
         // 2) Start spawning enemies for this wave
         StartCoroutine(WaveCoroutine(wave));

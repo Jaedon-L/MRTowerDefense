@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class RaycastTower : MonoBehaviour
 {
     public float range = .45f;
@@ -13,7 +14,14 @@ public class RaycastTower : MonoBehaviour
 
     private float fireCooldown = 0f;
     private Transform target;
+    public AudioClip cannonSound;
+    private AudioSource audioSource;
 
+
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
     void Update()
     {
         fireCooldown -= Time.deltaTime;
@@ -59,18 +67,31 @@ public class RaycastTower : MonoBehaviour
 
     void FireProjectile()
     {
-        GameObject proj = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
-        Rigidbody rb = proj.GetComponent<Rigidbody>();
-
-        if (rb != null && target != null)
+        if (target == null) return;
+        // Play cannon sound
+        if (audioSource && cannonSound)
         {
-            Vector3 direction = (target.position - firePoint.position).normalized;
-            // float launchForce = 20f; // adjust as needed
+            audioSource.PlayOneShot(cannonSound);
+        }
+        // Instantiate the projectile
+        GameObject proj = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
+
+        // Calculate direction to the *center* of the enemy
+        Vector3 direction = (target.position - firePoint.position).normalized;
+
+        // Rotate projectile to face the target
+        proj.transform.forward = direction;
+
+        Rigidbody rb = proj.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
             rb.velocity = direction * launchForce;
+            // If gravity is off and you want a laser-like projectile, this works perfectly.
         }
 
-        // Optional: if your projectile handles damage on impact
+
     }
+
 
     /*
     void ShootBulletRay()

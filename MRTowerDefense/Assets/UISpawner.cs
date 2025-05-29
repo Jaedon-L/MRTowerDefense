@@ -12,13 +12,29 @@ public class UISpawner : MonoBehaviour
     private int towersSpawned = 0;
 
     public TextMeshPro Tower1Num;
-
+    public TextMeshPro WaveNum;
+    private int currentWave = 1;
 
     void Start()
     {
-        UpdateTowerUI(); 
+        UpdateTowerUI();
+        
+    }
+    public void StartNextWave()
+    {
+        currentWave++;
+        UpdateWaveUI();
+
+        // Start spawning or do whatever logic you need here
     }
 
+    private void UpdateWaveUI()
+    {
+        if (WaveNum != null)
+        {
+            WaveNum.text = "Wave: " + currentWave;
+        }
+    }
     [ContextMenu("Spawn Tower 1")]
     public void SpawnTower1()
     {
@@ -42,11 +58,11 @@ public class UISpawner : MonoBehaviour
         UpdateTowerUI(); // Reset UI at start of wave
     }
 
-private void UpdateTowerUI()
-{
-    int remainingTowers = maxTowersThisWave - towersSpawned;
-    Tower1Num.text = remainingTowers.ToString();
+    private void UpdateTowerUI()
+    {
+        int remainingTowers = maxTowersThisWave - towersSpawned;
+        Tower1Num.text = remainingTowers.ToString();
+        
 
-  
-}
+    }
 }

@@ -164,6 +164,44 @@ MonoBehaviour:
     spawnInterval: 0.5
     delayBeforeNextWave: 5
     towerLimit: 1
+  - enemies:
+    - prefab: {fileID: 5877138488357101145, guid: 3705ec4b218851a4cb787e49454ac4ab,
+        type: 3}
+      count: 6
+    - prefab: {fileID: 5877138488357101145, guid: 3705ec4b218851a4cb787e49454ac4ab,
+        type: 3}
+      count: 6
+    - prefab: {fileID: 547582376219743082, guid: 96215572da470a34da404159f3ddbf24,
+        type: 3}
+      count: 6
+    - prefab: {fileID: 547582376219743082, guid: 96215572da470a34da404159f3ddbf24,
+        type: 3}
+      count: 6
+    spawnInterval: 0.5
+    delayBeforeNextWave: 5
+    towerLimit: 1
+  - enemies:
+    - prefab: {fileID: 5877138488357101145, guid: 3705ec4b218851a4cb787e49454ac4ab,
+        type: 3}
+      count: 6
+    - prefab: {fileID: 5877138488357101145, guid: 3705ec4b218851a4cb787e49454ac4ab,
+        type: 3}
+      count: 6
+    - prefab: {fileID: 5877138488357101145, guid: 3705ec4b218851a4cb787e49454ac4ab,
+        type: 3}
+      count: 6
+    - prefab: {fileID: 547582376219743082, guid: 96215572da470a34da404159f3ddbf24,
+        type: 3}
+      count: 6
+    - prefab: {fileID: 547582376219743082, guid: 96215572da470a34da404159f3ddbf24,
+        type: 3}
+      count: 6
+    - prefab: {fileID: 547582376219743082, guid: 96215572da470a34da404159f3ddbf24,
+        type: 3}
+      count: 6
+    spawnInterval: 0.5
+    delayBeforeNextWave: 5
+    towerLimit: 1
   uiSpawner: {fileID: 0}
 --- !u!1 &1484047245331076648
 GameObject:
