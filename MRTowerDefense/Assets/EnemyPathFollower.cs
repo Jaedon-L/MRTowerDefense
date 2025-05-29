@@ -23,12 +23,15 @@ public class EnemyPathFollower : MonoBehaviour
     private NavMeshAgent _agent;
     public event Action<EnemyPathFollower> OnFinished;
 
+    private Animator _animator;
+
     void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
         _agent.updateRotation = false;
         _agent.acceleration *= accelerationMultiplier;
         _agent.speed *= speedMultiplier;
+        _animator = GetComponent<Animator>(); 
     }
 
     /// <summary>
@@ -94,11 +97,18 @@ public class EnemyPathFollower : MonoBehaviour
         OnFinished = null;
         Destroy(gameObject);
     }
-
-    void OnDestroy()
+    
+    public void OnDestroy()
     {
         // In case something else destroys us early
+        // _animator.SetTrigger("Die");
         OnFinished?.Invoke(this);
+    }
+    public void Die()
+    {
+        _animator.SetTrigger("Die");
+        _agent.isStopped = true;
+        Destroy(gameObject, 2);
     }
 
     void OnDrawGizmosSelected()

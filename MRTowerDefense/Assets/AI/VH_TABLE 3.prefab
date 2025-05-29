@@ -298,8 +298,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d90e5ddfd152a64b9b5ce124ca381bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 790644720246203283, guid: c907813b5ce8304409f7919541adaa3d,
-    type: 3}
+  enemyPrefab:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   buttonPrefab: {fileID: 7232824312658301453, guid: 70f2c3b1f1ecfeb44aac7a59f55670b7,
     type: 3}
   startPoint: {fileID: 3497139072261298153}
@@ -311,18 +313,43 @@ MonoBehaviour:
   amplitude: 0.5
   frequency: 2
   waves:
-  - enemyCount: 10
+  - enemies:
+    - prefab: {fileID: 547582376219743082, guid: 96215572da470a34da404159f3ddbf24,
+        type: 3}
+      count: 5
     spawnInterval: 0.5
     delayBeforeNextWave: 5
     towerLimit: 1
-  - enemyCount: 10
+  - enemies:
+    - prefab: {fileID: 5877138488357101145, guid: 3705ec4b218851a4cb787e49454ac4ab,
+        type: 3}
+      count: 7
     spawnInterval: 0.5
     delayBeforeNextWave: 5
-    towerLimit: 2
-  - enemyCount: 15
+    towerLimit: 1
+  - enemies:
+    - prefab: {fileID: 5877138488357101145, guid: 3705ec4b218851a4cb787e49454ac4ab,
+        type: 3}
+      count: 5
+    - prefab: {fileID: 547582376219743082, guid: 96215572da470a34da404159f3ddbf24,
+        type: 3}
+      count: 5
     spawnInterval: 0.5
     delayBeforeNextWave: 5
-    towerLimit: 3
+    towerLimit: 1
+  - enemies:
+    - prefab: {fileID: 5877138488357101145, guid: 3705ec4b218851a4cb787e49454ac4ab,
+        type: 3}
+      count: 6
+    - prefab: {fileID: 547582376219743082, guid: 96215572da470a34da404159f3ddbf24,
+        type: 3}
+      count: 6
+    - prefab: {fileID: 547582376219743082, guid: 96215572da470a34da404159f3ddbf24,
+        type: 3}
+      count: 6
+    spawnInterval: 0.5
+    delayBeforeNextWave: 5
+    towerLimit: 1
   uiSpawner: {fileID: 0}
 --- !u!1 &5679203259839093331
 GameObject:

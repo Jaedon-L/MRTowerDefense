@@ -4,10 +4,12 @@ public class EnemyHealth : MonoBehaviour
 {
     public float maxHealth = 10f;
     private float currentHealth;
+    private EnemyPathFollower enemy;
 
     void Awake()
     {
         currentHealth = maxHealth;
+        enemy = GetComponent<EnemyPathFollower>();
     }
 
     public void TakeDamage(float amount)
@@ -15,7 +17,8 @@ public class EnemyHealth : MonoBehaviour
         currentHealth -= amount;
         if (currentHealth <= 0f)
         {
-            Destroy(gameObject); // or trigger death behavior
+            // Destroy(gameObject); // or trigger death behavior
+            enemy.Die(); 
         }
     }
 }

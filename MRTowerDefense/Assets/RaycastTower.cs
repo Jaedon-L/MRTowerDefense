@@ -2,25 +2,21 @@ using UnityEngine;
 
 public class RaycastTower : MonoBehaviour
 {
-    public float range = 10f;
-    public float damagePerSecond = 5f;
+    public float range = .45f;
+    public float damagePerShot = 5f;
     public float rotationSpeed = 5f;
     public Transform turret; // the rotating part
-    public Transform rayOrigin; // where the ray starts
-    public LineRenderer laserVisual;
-    public float fireRate = 2f; // Shots per second
-    private float fireCooldown = 0f; // Internal cooldown
-    private float laserShowDuration = 0.05f; // How long the laser line is visible
+    public Transform firePoint; // where the projectile spawns from
+    public float fireRate = 2f;
+    public float launchForce = 20f; // adjust as needed
+    public GameObject projectilePrefab;
 
-    public GameObject bulletLinePrefab;
-
-
+    private float fireCooldown = 0f;
     private Transform target;
 
     void Update()
     {
         fireCooldown -= Time.deltaTime;
-
 
         FindTarget();
 
@@ -30,18 +26,16 @@ public class RaycastTower : MonoBehaviour
 
             if (fireCooldown <= 0f)
             {
-                ShootBulletRay();
+                FireProjectile();
                 fireCooldown = 1f / fireRate;
-
             }
         }
 
-        // UpdateLaserVisibility();
+        // UpdateLaserVisibility(); // (if you reactivate ray later)
     }
 
     void FindTarget()
     {
-        // Find the first enemy in range (can optimize later)
         Collider[] hits = Physics.OverlapSphere(transform.position, range);
         target = null;
 
@@ -63,55 +57,50 @@ public class RaycastTower : MonoBehaviour
         turret.rotation = Quaternion.Euler(0f, rotation.y, 0f);
     }
 
+    void FireProjectile()
+    {
+        GameObject proj = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
+        Rigidbody rb = proj.GetComponent<Rigidbody>();
+
+        if (rb != null && target != null)
+        {
+            Vector3 direction = (target.position - firePoint.position).normalized;
+            // float launchForce = 20f; // adjust as needed
+            rb.velocity = direction * launchForce;
+        }
+
+        // Optional: if your projectile handles damage on impact
+    }
+
+    /*
     void ShootBulletRay()
     {
         RaycastHit hit;
-        Vector3 dir = (target.position - rayOrigin.position).normalized;
+        Vector3 dir = (target.position - firePoint.position).normalized;
 
-        if (Physics.Raycast(rayOrigin.position, dir, out hit, range))
+        if (Physics.Raycast(firePoint.position, dir, out hit, range))
         {
             if (hit.collider.CompareTag("Enemy"))
             {
                 EnemyHealth enemy = hit.collider.GetComponent<EnemyHealth>();
                 if (enemy != null)
                 {
-                    enemy.TakeDamage(damagePerSecond); // Apply damage per shot
+                    enemy.TakeDamage(damagePerShot);
                 }
             }
 
-            // if (laserVisual)
-            // {
-            //     laserVisual.SetPosition(0, rayOrigin.position);
-            //     laserVisual.SetPosition(1, hit.point);
-            // }
-             // Visual bullet effect
             GameObject line = Instantiate(bulletLinePrefab);
             LineRenderer lr = line.GetComponent<LineRenderer>();
-            lr.SetPosition(0, rayOrigin.position);
+            lr.SetPosition(0, firePoint.position);
             lr.SetPosition(1, hit.point);
-            Destroy(line, 0.1f); // short lifetime
+            Destroy(line, 0.1f);
         }
     }
-    // void UpdateLaserVisibility()
-    // {
-    //     if (laserVisual)
-    //     {
-    //         laserVisual.enabled = laserTimer > 0f;
-    //     }
-    // }
+    */
 
-
-    void DisableLaser()
-    {
-        if (laserVisual)
-        {
-            laserVisual.enabled = false;
-        }
-    }
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, range);
     }
-
 }

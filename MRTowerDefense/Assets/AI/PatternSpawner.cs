@@ -8,7 +8,7 @@ using UnityEngine.Analytics;
 public class PatternSpawner : MonoBehaviour
 {
     [Header("Prefabs & Transforms")]
-    public GameObject enemyPrefab;
+    public List<GameObject> enemyPrefab;
     public GameObject buttonPrefab;
     public Transform startPoint, endPoint, spawnButton;
 
@@ -29,18 +29,26 @@ public class PatternSpawner : MonoBehaviour
     [System.Serializable]
     public class Wave
     {
-        public int enemyCount = 5;
+        [System.Serializable]
+        public class EnemyEntry
+        {
+            public GameObject prefab;
+            public int count;
+        }
+        public List<EnemyEntry> enemies = new List<EnemyEntry>();
         public float spawnInterval = 1f;
         public float delayBeforeNextWave = 2f;
+
         [Tooltip("How many towers the player may build in this wave")]
         public int towerLimit = 1;
+
     }
     private bool _started = false;
     private GameObject _buttonGO;
     private bool _waveStartPressed = false;
     private int currentWaveIndex = 0;
     private Coroutine waveRoutine;
-    
+
     [Header("Tower Build UI")]
     public UISpawner uiSpawner;
 
@@ -58,7 +66,7 @@ public class PatternSpawner : MonoBehaviour
         {
             playerHealth.onDeath.AddListener(StopSpawningOnGameOver);
         }
-        uiSpawner = FindObjectOfType<UISpawner>(); 
+        uiSpawner = FindObjectOfType<UISpawner>();
     }
     private void StopSpawningOnGameOver()
     {
@@ -98,25 +106,26 @@ public class PatternSpawner : MonoBehaviour
     {
         GeneratePath();
         // spawn enemies
-        for (int i = 0; i < wave.enemyCount; i++)
+        foreach (var entry in wave.enemies)
         {
-            var go = Instantiate(enemyPrefab, _path[0], Quaternion.identity);
-            var pf = go.GetComponent<EnemyPathFollower>();
+            for (int i = 0; i < entry.count; i++)
+            {
+                var go = Instantiate(entry.prefab, _path[0], Quaternion.identity);
+                var pf = go.GetComponent<EnemyPathFollower>();
 
-            pf.SetPath(_path);
-            _aliveEnemies.Add(pf);
-            pf.OnFinished += HandleFinished;
-            yield return new WaitForSeconds(wave.spawnInterval);
+                pf.SetPath(_path);
+                _aliveEnemies.Add(pf);
+                pf.OnFinished += HandleFinished;
+
+                yield return new WaitForSeconds(wave.spawnInterval);
+            }
         }
 
-        // wait for them all
         yield return new WaitUntil(() => _aliveEnemies.Count == 0);
 
-        // optional delay
         if (wave.delayBeforeNextWave > 0)
             yield return new WaitForSeconds(wave.delayBeforeNextWave);
 
-        // advance wave index
         currentWaveIndex++;
 
         if (currentWaveIndex < waves.Count)
