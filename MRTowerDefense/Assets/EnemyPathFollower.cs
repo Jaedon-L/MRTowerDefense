@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -20,40 +21,39 @@ public class EnemyPathFollower : MonoBehaviour
     private List<Vector3> _path;
     private int _currentIndex;
     private NavMeshAgent _agent;
+    public event Action<EnemyPathFollower> OnFinished;
 
     void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
-
-        // Disable navmesh auto-rotation so we can handle it manually:
         _agent.updateRotation = false;
-
-        // Apply multipliers:
         _agent.acceleration *= accelerationMultiplier;
-        _agent.speed        *= speedMultiplier;
+        _agent.speed *= speedMultiplier;
     }
 
     /// <summary>
-    /// Call this immediately after instantiating the enemy.
+    /// Call immediately after Instantiate().
     /// </summary>
     public void SetPath(List<Vector3> path)
     {
-        if (path == null || path.Count == 0)
+        if (path == null || path.Count < 2)
         {
-            Debug.LogError("[EnemyPathFollower] Received empty path!");
+            Debug.LogError("[EnemyPathFollower] Path too short!");
+            FinishAndDestroy();
             return;
         }
 
         _path = new List<Vector3>(path);
-        _currentIndex = 0;
-        MoveToNextPoint();
+        // We start *at* index 0 (spawn), so first move is to index 1:
+        _currentIndex = 1;
+        _agent.SetDestination(_path[_currentIndex]);
     }
 
     void Update()
     {
-        if (_path == null) return;
+        if (_path == null || _path.Count < 2) return;
 
-        // 1) Smooth rotation toward movement direction
+        // Smoothly rotate toward movement direction
         Vector3 vel = _agent.velocity;
         if (vel.sqrMagnitude > 0.01f)
         {
@@ -65,28 +65,43 @@ public class EnemyPathFollower : MonoBehaviour
             );
         }
 
-        // 2) Advance to next waypoint when close enough
+        // Have we reached (or nearly reached) our current waypoint?
         if (!_agent.pathPending && _agent.remainingDistance <= waypointTolerance)
         {
-            _currentIndex++;
-            if (_currentIndex < _path.Count)
-                MoveToNextPoint();
+            // If there are more waypoints ahead…
+            if (_currentIndex < _path.Count - 1)
+            {
+                _currentIndex++;
+                _agent.SetDestination(_path[_currentIndex]);
+            }
             else
-                OnPathComplete();
+            {
+                // We were on the last waypoint → finish
+                FinishAndDestroy();
+            }
         }
     }
 
-    private void MoveToNextPoint()
+    private void FinishAndDestroy()
     {
-        _agent.SetDestination(_path[_currentIndex]);
-    }
 
-    private void OnPathComplete()
-    {
+        var playerHealth = FindObjectOfType<PlayerHealth>();
+        if (playerHealth != null)
+        {
+            playerHealth.TakeDamage(1);
+        }
+        OnFinished?.Invoke(this);
+        OnFinished = null;
         Destroy(gameObject);
     }
 
-    void OnDrawGizmos()
+    void OnDestroy()
+    {
+        // In case something else destroys us early
+        OnFinished?.Invoke(this);
+    }
+
+    void OnDrawGizmosSelected()
     {
         if (_path == null) return;
         Gizmos.color = Color.red;

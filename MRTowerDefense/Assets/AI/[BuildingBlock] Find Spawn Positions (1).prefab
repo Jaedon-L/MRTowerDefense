@@ -66,7 +66,7 @@ MonoBehaviour:
   SpawnOnStart: 1
   SpawnObject: {fileID: 7761100699051985790, guid: c56755914d411be4c802fe5f34f8788a,
     type: 3}
-  SpawnAmount: 5
+  SpawnAmount: 2
   MaxIterations: 1000
   SpawnLocations: 3
   Labels: 8
