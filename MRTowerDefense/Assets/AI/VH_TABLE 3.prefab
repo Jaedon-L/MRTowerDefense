@@ -196,6 +196,12 @@ PrefabInstance:
       propertyPath: spawnButton
       value: 
       objectReference: {fileID: 1111495734071828499}
+    - target: {fileID: 373493963394306774, guid: f6144898e3e623644a70b5a7bbe1bf34,
+        type: 3}
+      propertyPath: buttonPrefab
+      value: 
+      objectReference: {fileID: 9165211517509604654, guid: 99d868908bc77a44aa650ad78ab62952,
+        type: 3}
     - target: {fileID: 1398387242726032812, guid: f6144898e3e623644a70b5a7bbe1bf34,
         type: 3}
       propertyPath: m_LocalPosition.x

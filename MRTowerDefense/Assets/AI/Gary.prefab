@@ -111,7 +111,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.06, y: 0.06, z: 0.06}
+  m_LocalScale: {x: 0.03, y: 0.03, z: 0.03}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1658263782649496570}
@@ -133,13 +133,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8833bde8cd8c2d0489ddc754a01872b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 0.36
+  range: 0.2
   damagePerShot: 3
   rotationSpeed: 5
   turret: {fileID: 4356936309985393815}
   firePoint: {fileID: 5772053703087264520}
   fireRate: 1
-  launchForce: 3
+  launchForce: 0.32
   projectilePrefab: {fileID: 684695328554681440, guid: 1c195e384c6c3d9418f8fdb96e13d034,
     type: 3}
   cannonSound: {fileID: 8300000, guid: 7bcaa45f324dcc445905284f2dbfc93f, type: 3}

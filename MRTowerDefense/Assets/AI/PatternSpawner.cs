@@ -188,12 +188,13 @@ public class PatternSpawner : MonoBehaviour
     public void SpawnButton()
     {
         // 2) Spawn the button under your UI canvas or container
-        _buttonGO = Instantiate(buttonPrefab, spawnButton.transform);
+        Transform buttonpos = FindObjectOfType<ButtonPos>().transform; 
+        _buttonGO = Instantiate(buttonPrefab, buttonpos.transform);
         // Parent without altering local scale:
         // btnGO.transform.SetParent(spawnButton, false);
 
         // 3) Link the button’s OnSelect to the spawner
-        var wrapper = _buttonGO.GetComponentInChildren<InteractableUnityEventWrapper>();
+        var wrapper = _buttonGO.GetComponent<InteractableUnityEventWrapper>();
         if (wrapper != null)
         {
             // Assume “WhenSelect” is the UnityEvent for poke‐select

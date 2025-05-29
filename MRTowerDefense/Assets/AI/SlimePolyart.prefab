@@ -104,7 +104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c220d837751369f4ea9e6e609a7d78d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
+  maxHealth: 20
 --- !u!195 &6830370184987099308
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -113,7 +113,7 @@ NavMeshAgent:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 547582376219743082}
   m_Enabled: 1
-  m_AgentTypeID: -902729914
+  m_AgentTypeID: 1479372276
   m_Radius: 0.58
   m_Speed: 0.5
   m_Acceleration: 8

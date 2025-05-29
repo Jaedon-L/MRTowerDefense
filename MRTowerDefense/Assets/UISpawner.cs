@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Unity.Mathematics;
 
 public class UISpawner : MonoBehaviour
 {
@@ -13,7 +14,8 @@ public class UISpawner : MonoBehaviour
 
     public TextMeshPro Tower1Num;
     public TextMeshPro WaveNum;
-    private int currentWave = 1;
+    private int currentWave = 0;
+    
 
     void Start()
     {
@@ -44,7 +46,7 @@ public class UISpawner : MonoBehaviour
             return;
         }
 
-        Instantiate(TowerPrefab, XRRigPos.position, XRRigPos.rotation);
+        Instantiate(TowerPrefab, XRRigPos.position, quaternion.identity);
         towersSpawned++;
 
         UpdateTowerUI(); // Update after placing a tower
